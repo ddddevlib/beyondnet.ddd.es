@@ -7,6 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeyondNet.Ddd.Es", "BeyondN
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeyondNet.Ddd.Es.EntityFrameworkSql", "BeyondNet.Ddd.Es.EntityFrameworkSql\BeyondNet.Ddd.Es.EntityFrameworkSql.csproj", "{48566C47-607D-4D88-BBF9-AF19FC052A2F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeyondNet.Ddd.Es.Test", "BeyondNet.Ddd.Es.Test\BeyondNet.Ddd.Es.Test.csproj", "{1618B9FC-69E6-416B-8DCA-C5A8C7CEF60F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeyondNet.Ddd.Es.Domain", "BeyondNet.Ddd.Es.Domain\BeyondNet.Ddd.Es.Domain.csproj", "{F946EBCC-F420-4AE9-B12B-096F04008792}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeyondNet.Ddd.Es.ConsoleApp", "BeyondNet.Ddd.Es.ConsoleApp\BeyondNet.Ddd.Es.ConsoleApp.csproj", "{90CFA4EE-D190-4343-A413-A4EA076F1BEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +27,18 @@ Global
 		{48566C47-607D-4D88-BBF9-AF19FC052A2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48566C47-607D-4D88-BBF9-AF19FC052A2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48566C47-607D-4D88-BBF9-AF19FC052A2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1618B9FC-69E6-416B-8DCA-C5A8C7CEF60F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1618B9FC-69E6-416B-8DCA-C5A8C7CEF60F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1618B9FC-69E6-416B-8DCA-C5A8C7CEF60F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1618B9FC-69E6-416B-8DCA-C5A8C7CEF60F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F946EBCC-F420-4AE9-B12B-096F04008792}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F946EBCC-F420-4AE9-B12B-096F04008792}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F946EBCC-F420-4AE9-B12B-096F04008792}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F946EBCC-F420-4AE9-B12B-096F04008792}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90CFA4EE-D190-4343-A413-A4EA076F1BEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90CFA4EE-D190-4343-A413-A4EA076F1BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90CFA4EE-D190-4343-A413-A4EA076F1BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90CFA4EE-D190-4343-A413-A4EA076F1BEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

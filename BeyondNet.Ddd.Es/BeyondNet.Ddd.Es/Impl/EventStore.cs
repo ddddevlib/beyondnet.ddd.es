@@ -6,20 +6,22 @@ using System.Text.Json;
 
 namespace BeyondNet.Ddd.Es.Impl
 {
-    public class EventStore<TAggregateRoot> : IEventStore<TAggregateRoot>
-            where TAggregateRoot : AggregateRoot<TAggregateRoot, IProps>
-            
+    public class EventStore<TAggregateRoot, TProps> : IEventStore<AggregateRoot<TAggregateRoot, TProps>, TProps>
+                where TAggregateRoot : class
+                where TProps : class, IProps
+
+
     {
         private readonly IEventStoreRepository eventStoreRepository;
-        private readonly ILogger<EventStore<TAggregateRoot>> logger;
+        private readonly ILogger<EventStore<TAggregateRoot, TProps>> logger;
 
-        public EventStore(IEventStoreRepository eventStoreRepository, ILogger<EventStore<TAggregateRoot>> logger)
+        public EventStore(IEventStoreRepository eventStoreRepository, ILogger<EventStore<TAggregateRoot, TProps>> logger)
         {
             this.eventStoreRepository = eventStoreRepository ?? throw new ArgumentNullException(nameof(eventStoreRepository));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<TAggregateRoot> Load(TAggregateRoot aggregate)
+        public async Task<AggregateRoot<TAggregateRoot, TProps>> Load(AggregateRoot<TAggregateRoot, TProps> aggregate)
         {
             var eventRecordsData = await eventStoreRepository.Load(aggregate.Id.GetValue());
 
@@ -48,7 +50,7 @@ namespace BeyondNet.Ddd.Es.Impl
 
             return aggregate;
         }
-        public async Task Save(TAggregateRoot aggregate)
+        public async Task Save(AggregateRoot<TAggregateRoot, TProps> aggregate)
         {
             if (aggregate is null)
             {
@@ -76,7 +78,7 @@ namespace BeyondNet.Ddd.Es.Impl
             aggregate.ClearDomainEvents();
         }
 
-        private List<EventDataRecord> ConvertAggregateToEventRecords(TAggregateRoot aggregate, string aggregateId, IReadOnlyCollection<IDomainEvent> domainEvents)
+        private List<EventDataRecord> ConvertAggregateToEventRecords(AggregateRoot<TAggregateRoot, TProps> aggregate, string aggregateId, IReadOnlyCollection<IDomainEvent> domainEvents)
         {
             var eventDataRecords = new List<EventDataRecord>();
 
