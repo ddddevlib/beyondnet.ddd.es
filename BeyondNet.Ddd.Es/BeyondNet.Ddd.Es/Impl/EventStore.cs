@@ -23,6 +23,12 @@ namespace BeyondNet.Ddd.Es.Impl
 
         public async Task<AggregateRoot<TAggregateRoot, TProps>> Load(AggregateRoot<TAggregateRoot, TProps> aggregate)
         {
+            if (aggregate is null)
+            {
+                logger.LogError("Aggregate cannot be null");
+                throw new ArgumentNullException(nameof(aggregate));
+            }
+
             var eventRecordsData = await eventStoreRepository.Load(aggregate.Id.GetValue());
 
             var domainEvents = eventRecordsData.Select(e =>

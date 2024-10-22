@@ -1,20 +1,40 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using BeyondNet.Ddd;
 using BeyondNet.Ddd.Es.Domain.Entities;
+using BeyondNet.Ddd.Es.EntityFrameworkSql;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
-Console.WriteLine("Start Application");
+Console.WriteLine("Setup Dependencies");
 
-Console.WriteLine("1. Creating a SampleEntity");
+using (var context = new EsDbContext())
+{
+    context.Database.EnsureCreated();
+}
 
-var sampleEntity1 = SampleEntity.Create(SampleName.Create("foo"));
+//var services = new ServiceCollection();
 
-Console.WriteLine("2. Creating another SampleEntity");
+//services.AddDbContext<EsDbContext>(options =>
+//{
+//    options.UseSqlServer(@"Server=(localdb)\\MSSQLLocalDB;Database=DddEsSample;Trusted_Connection=True;MultipleActiveResultSets=true");
+//});
 
-var sampleEntity2 = SampleEntity.Create(SampleName.Create("foo"));
+//var serviceProvider = services.BuildServiceProvider();
 
-Console.WriteLine("3. Creating an AggregateRoot linking Samples Entities");
 
-var aggregateRoot = SampleAggregateRoot.Create(SampleName.Create("foo"), sampleEntity1, sampleEntity2);
+//Console.WriteLine("Start Application");
+
+//Console.WriteLine("1. Creating a SampleEntity");
+
+//var sampleEntity1 = SampleEntity.Create(SampleName.Create("foo"));
+
+//Console.WriteLine("2. Creating another SampleEntity");
+
+//var sampleEntity2 = SampleEntity.Create(SampleName.Create("foo"));
+
+//Console.WriteLine("3. Creating an AggregateRoot linking Samples Entities");
+
+//var aggregateRoot = SampleAggregateRoot.Create(SampleName.Create("foo"), sampleEntity1, sampleEntity2);
 
 
 

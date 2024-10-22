@@ -3,6 +3,7 @@ using BeyondNet.Ddd.Es.EntityFrameworkSql.Tables;
 using BeyondNet.Ddd.Es.Models;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace BeyondNet.Ddd.Es.EntityFrameworkSql
 {
     public class EsDbContext : DbContext
@@ -12,13 +13,20 @@ namespace BeyondNet.Ddd.Es.EntityFrameworkSql
         public DbSet<AggregateRootTable> AggregateRootTables { get; set; }
 
 
-        public EsDbContext(DbContextOptions<EsDbContext> options) : base(options)
+
+        //public EsDbContext(DbContextOptions<EsDbContext> options) : base(options)
+        //{
+        //}
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=DddEsSample; Trusted_Connection=True;MultipleActiveResultSets=true; ");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("DddEventDataStore");
+            modelBuilder.HasDefaultSchema("DddEsSample");
 
             modelBuilder.ApplyConfiguration(new ErrorDataRecordTypeConfiguration());
             modelBuilder.ApplyConfiguration(new EventDataRecordTypeConfiguration());
