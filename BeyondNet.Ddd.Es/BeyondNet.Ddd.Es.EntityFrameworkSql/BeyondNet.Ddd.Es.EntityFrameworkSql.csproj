@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BeyondNet.Ddd.Es.Domain\BeyondNet.Ddd.Es.Domain.csproj" />
     <ProjectReference Include="..\BeyondNet.Ddd.Es\BeyondNet.Ddd.Es.csproj" />
   </ItemGroup>
 

@@ -8,7 +8,7 @@ namespace BeyondNet.Ddd.Es.EntityFrameworkSql.Configurations
     {
         public void Configure(EntityTypeBuilder<AggregateRootTable> builder)
         {
-            builder.ToTable("aggregateroots");
+            builder.ToTable("aggregaterootsample");
             builder.HasKey(x => x.Id);
         }
     }

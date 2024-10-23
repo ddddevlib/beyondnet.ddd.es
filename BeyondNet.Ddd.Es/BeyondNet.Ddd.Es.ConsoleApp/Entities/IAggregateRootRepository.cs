@@ -1,4 +1,4 @@
-﻿namespace BeyondNet.Ddd.Es.Domain.Entities
+﻿namespace BeyondNet.Ddd.Es.ConsoleApp.Entities
 {
     public interface IAggregateRootRepository
     {

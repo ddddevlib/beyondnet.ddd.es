@@ -1,8 +1,4 @@
-﻿using BeyondNet.Ddd.Interfaces;
-using BeyondNet.Ddd.ValueObjects.Audit;
-using BeyondNet.Ddd.ValueObjects.Common;
-
-namespace BeyondNet.Ddd.Es.Domain.Entities
+﻿namespace BeyondNet.Ddd.Es.ConsoleApp.Entities
 {
     public class SampleEntityProps: IProps
     {

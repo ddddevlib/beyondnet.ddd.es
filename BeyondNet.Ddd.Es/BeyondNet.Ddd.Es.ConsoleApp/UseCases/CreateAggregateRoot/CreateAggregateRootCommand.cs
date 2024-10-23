@@ -3,9 +3,9 @@ using BeyondNet.Cqrs.Interfaces;
 
 namespace BeyondNet.Ddd.Es.ConsoleApp.UseCases.CreateSampleAggregateRoot
 {
-    public class SampleCreateCommand : ICommand<ResultSet>
+    public class CreateAggregateRootCommand : ICommand<ResultSet>
     {
-        public SampleCreateCommand(
+        public CreateAggregateRootCommand(
             string name,
             string sampleEntityOneId,
             string sampleEntityOneName,

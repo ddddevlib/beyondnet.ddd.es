@@ -1,2 +1,5 @@
 # beyondnet.eventsourcing
-Extension library for Ddd to adapt Event Sourcing concepts
+
+The beyondnet.eventsourcing library on GitHub provides tools to implement event sourcing patterns in .NET applications. It focuses on domain-driven design (DDD) principles, enabling developers to manage state through event streams. This library simplifies capturing, persisting, and replaying events, helping build systems where historical state changes are essential. Check it out here for more details.
+
+The beyondnet.eventsourcing library is an extension of BeyondNet.Ddd, designed to enhance .NET applications with event-sourcing capabilities. It complements domain-driven design (Ddd) by enabling state management through event streams, allowing developers to capture, store, and replay events efficiently. This helps build systems that require a clear historical record of state changes, ensuring both consistency and traceability within business logic.

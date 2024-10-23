@@ -1,12 +1,9 @@
-﻿using BeyondNet.Ddd.Interfaces;
-
-namespace BeyondNet.Ddd.Es.Interfaces
+﻿namespace BeyondNet.Ddd.Es.Interfaces
 {
-    public interface IEventStore<TAggregate,TProps>
-                where TAggregate : class
-                where TProps : class, IProps
+    public interface IEventStore<TAggregateRoot>
+                where TAggregateRoot : IAggregateRoot
     {
-        Task<TAggregate> Load(TAggregate aggregate);
-        Task Save(TAggregate aggregate);
+        Task<TAggregateRoot> Load(TAggregateRoot aggregate);
+        Task Save(TAggregateRoot aggregate);
     }
 }

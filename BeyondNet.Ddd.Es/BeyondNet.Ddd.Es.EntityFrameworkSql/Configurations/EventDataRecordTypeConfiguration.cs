@@ -8,7 +8,7 @@ namespace BeyondNet.Ddd.Es.EntityFrameworkSql.Configurations
     {
         public void Configure(EntityTypeBuilder<EventDataRecord> builder)
         {
-            builder.ToTable("eventdata");
+            builder.ToTable("eventdatarecords");
             builder.HasKey(x => x.Id);
         }
     }

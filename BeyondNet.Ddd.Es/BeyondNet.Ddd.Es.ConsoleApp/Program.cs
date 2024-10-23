@@ -1,40 +1,54 @@
-﻿// See https://aka.ms/new-console-template for more information
-using BeyondNet.Ddd;
-using BeyondNet.Ddd.Es.Domain.Entities;
-using BeyondNet.Ddd.Es.EntityFrameworkSql;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-
+﻿
 Console.WriteLine("Setup Dependencies");
 
-using (var context = new EsDbContext())
+using var loggerFactory = LoggerFactory.Create(builder =>
 {
-    context.Database.EnsureCreated();
+    builder
+        .AddFilter("Microsoft", LogLevel.Warning)
+        .AddFilter("System", LogLevel.Warning)
+        .AddFilter("LoggingConsoleApp.Program", LogLevel.Debug)
+        .AddConsole();
+});
+ILogger logger = loggerFactory.CreateLogger<Program>();
+
+var services = new ServiceCollection();
+
+services.AddMediatR(cfg => {
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+});
+
+services.AddDbContext<EsDbContext>(options =>
+{
+    options.UseSqlServer(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+});
+
+services.AddLogging(cfg =>
+{
+    cfg.AddConsole();
+});
+
+services.AddScoped<IAggregateRootRepository, AggregateRootRepository>();
+services.AddScoped<IEventStore<SampleAggregateRoot>, EventStore<SampleAggregateRoot>>();
+services.AddScoped<IEventStoreRepository, EventStoreRepository>();
+
+var serviceProvider = services.BuildServiceProvider();
+
+var mediator = serviceProvider.GetRequiredService<IMediator>();
+
+
+Console.WriteLine("1. Creating a Command");
+
+var command = new CreateAggregateRootCommand("Sample Aggregate Root", Guid.NewGuid().ToString(), "Sample Entity One",Guid.NewGuid().ToString(),"Sample Entity Two");
+
+Console.WriteLine("2. Creating a Command Handler");
+
+var result  =  await mediator.Send(command);
+
+if (result.IsSuccess)
+{
+    Console.WriteLine("Command executed successfully");
 }
-
-//var services = new ServiceCollection();
-
-//services.AddDbContext<EsDbContext>(options =>
-//{
-//    options.UseSqlServer(@"Server=(localdb)\\MSSQLLocalDB;Database=DddEsSample;Trusted_Connection=True;MultipleActiveResultSets=true");
-//});
-
-//var serviceProvider = services.BuildServiceProvider();
-
-
-//Console.WriteLine("Start Application");
-
-//Console.WriteLine("1. Creating a SampleEntity");
-
-//var sampleEntity1 = SampleEntity.Create(SampleName.Create("foo"));
-
-//Console.WriteLine("2. Creating another SampleEntity");
-
-//var sampleEntity2 = SampleEntity.Create(SampleName.Create("foo"));
-
-//Console.WriteLine("3. Creating an AggregateRoot linking Samples Entities");
-
-//var aggregateRoot = SampleAggregateRoot.Create(SampleName.Create("foo"), sampleEntity1, sampleEntity2);
-
-
-
+else
+{
+    Console.WriteLine("Command failed");
+}

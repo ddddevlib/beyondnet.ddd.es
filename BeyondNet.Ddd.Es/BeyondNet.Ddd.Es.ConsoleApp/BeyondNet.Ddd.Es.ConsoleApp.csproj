@@ -9,7 +9,10 @@
 
   <ItemGroup>
     <PackageReference Include="BeyondNet.Cqrs" Version="1.0.0" />
+    <PackageReference Include="BeyondNet.Ddd" Version="1.8.0" />
     <PackageReference Include="BeyondNet.Ddd.AutoMapper" Version="1.1.0" />
+    <PackageReference Include="BeyondNet.Ddd.ValueObjects" Version="1.0.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
       <PrivateAssets>all</PrivateAssets>
@@ -20,12 +23,20 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BeyondNet.Ddd.Es.Domain\BeyondNet.Ddd.Es.Domain.csproj" />
     <ProjectReference Include="..\BeyondNet.Ddd.Es.EntityFrameworkSql\BeyondNet.Ddd.Es.EntityFrameworkSql.csproj" />
     <ProjectReference Include="..\BeyondNet.Ddd.Es\BeyondNet.Ddd.Es.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UseCases\ChangeEntityRef1AggregateRoot\" />
+    <Folder Include="UseCases\ChangeEntityRef2AggregateRoot\" />
+    <Folder Include="UseCases\ActivateAggregateRoot\" />
+    <Folder Include="UseCases\UpdateNameAggregateRoot\" />
   </ItemGroup>
 
 </Project>
