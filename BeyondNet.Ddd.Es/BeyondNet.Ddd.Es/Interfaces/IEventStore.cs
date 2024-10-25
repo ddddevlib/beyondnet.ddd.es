@@ -1,9 +1,8 @@
 ﻿namespace BeyondNet.Ddd.Es.Interfaces
 {
-    public interface IEventStore<TAggregateRoot>
-                where TAggregateRoot : IAggregateRoot
+    public interface IEventStore
     {
-        Task<TAggregateRoot> Load(TAggregateRoot aggregate);
-        Task Save(TAggregateRoot aggregate);
+        Task SaveAsync(Guid aggregateId, string aggregateType, ICollection<IDomainEvent> events, int expectedVersion);
+        Task<IEnumerable<IDomainEvent>> GetEventsAsync(Guid aggregateId);
     }
 }

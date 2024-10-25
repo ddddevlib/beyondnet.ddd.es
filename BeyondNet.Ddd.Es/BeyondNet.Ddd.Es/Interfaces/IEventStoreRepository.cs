@@ -2,7 +2,7 @@
 {
     public interface IEventStoreRepository
     {
-        Task<ICollection<EventDataRecord>> Load(string aggregateId);
-        Task Save(EventDataRecord eventData);
+        Task<ICollection<EventDataRecord>> Load(Guid aggregateId);
+        Task SaveAsync(EventDataRecord @event);
     }
 }

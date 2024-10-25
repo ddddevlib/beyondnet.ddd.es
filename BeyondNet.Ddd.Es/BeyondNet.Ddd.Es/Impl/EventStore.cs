@@ -1,110 +1,74 @@
 ﻿namespace BeyondNet.Ddd.Es.Impl
 {
-    public class EventStore<TAggregateRoot> : IEventStore<TAggregateRoot>
-                where TAggregateRoot : IAggregateRoot
-
+    public class EventStore : IEventStore
 
     {
         private readonly IEventStoreRepository eventStoreRepository;
-        private readonly ILogger<EventStore<TAggregateRoot>> logger;
+        private readonly ILogger<EventStore> logger;
 
-        public EventStore(IEventStoreRepository eventStoreRepository, ILogger<EventStore<TAggregateRoot>> logger)
+        public EventStore(IEventStoreRepository eventStoreRepository, ILogger<EventStore> logger)
         {
             this.eventStoreRepository = eventStoreRepository ?? throw new ArgumentNullException(nameof(eventStoreRepository));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<TAggregateRoot> Load(TAggregateRoot aggregate)
+        public async Task<IEnumerable<IDomainEvent>> GetEventsAsync(Guid aggregateId)
         {
-            if (aggregate is null)
+            if (aggregateId == Guid.Empty)
             {
-                logger.LogError("Aggregate cannot be null");
-                throw new ArgumentNullException(nameof(aggregate));
+                logger.LogError("AggregateId cannot be empty");
+                throw new ArgumentException("AggregateId cannot be empty", nameof(aggregateId));
             }
 
-            var eventRecordsData = await eventStoreRepository.Load(aggregate.Id.GetValue());
+            var eventRecordsData = await eventStoreRepository.Load(aggregateId);
 
-            var domainEvents = eventRecordsData.Select(e =>
+            var eventStream = await eventStoreRepository.Load(aggregateId);
+
+            if (eventStream == null || !eventStream.Any())
             {
-                var assemblyQualifyName = e.AssemblyQualifyName;
-                var eventType = Type.GetType(assemblyQualifyName);
-                var eventData = JsonSerializer.Deserialize(e.EventData, eventType!);
-                return eventData as IDomainEvent;
-            }).ToList().AsReadOnly();
-
-
-            if (aggregate is null)
-            {
-                logger.LogError("Aggregate cannot be null");
-                throw new ArgumentNullException(nameof(aggregate));
+                logger.LogInformation("No events found");
+                throw new InvalidOperationException("No events found");
             }
 
-            if (!domainEvents.Any())
-            {
-                logger.LogInformation("No events to load");
-                return aggregate;
-            }
-
-            aggregate.LoadDomainEvents(domainEvents!);
-
-            return aggregate;
-        }
-        public async Task Save(TAggregateRoot aggregate)
-        {
-            if (aggregate is null)
-            {
-                logger.LogError("Aggregate cannot be null");
-                throw new ArgumentNullException(nameof(aggregate));
-            }
-
-            var aggregateId = aggregate.Id.GetValue();
-
-            var domainEvents = aggregate.GetDomainEvents();
-
-            if (domainEvents.Count == 0)
-            {
-                logger.LogInformation("No changes to save");
-                return;
-            }
-
-            var eventDataRecords = ConvertAggregateToEventRecords(aggregate, aggregateId, domainEvents);
-
-            foreach (var eventDataRecord in eventDataRecords)
-            {
-                await eventStoreRepository.Save(eventDataRecord);
-            }
-
-            aggregate.ClearDomainEvents();
+            return eventStream.OrderBy(x => x.Version).Select(x => x.EventData).ToList();
         }
 
-        private List<EventDataRecord> ConvertAggregateToEventRecords(TAggregateRoot aggregate, string aggregateId, IReadOnlyCollection<IDomainEvent> domainEvents)
+        public async Task SaveAsync(Guid aggregateId, string aggregateType, ICollection<IDomainEvent> events, int expectedVersion)
         {
-            var eventDataRecords = new List<EventDataRecord>();
+            var eventStream = await eventStoreRepository.Load(aggregateId);
 
-            try
+            if (eventStream == null || !eventStream.Any())
             {
-                foreach (var domainEvent in domainEvents)
+                logger.LogInformation("No events found");
+                throw new InvalidOperationException("No events found");
+            }
+
+            if (expectedVersion != -1 && eventStream.Last().Version != expectedVersion)
+            {
+                throw new Exception("Concurrency exception");
+            }
+
+            var version = expectedVersion;
+
+            foreach (var @event in events)
+            {
+                version++;
+                
+                @event.Version = version;
+                
+                var eventType = @event.GetType().Name;
+
+                var eventModel = new EventDataRecord
                 {
-                    var recordData = new EventDataRecord
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        AggregateId = aggregateId,
-                        AssemblyQualifyName = domainEvent.GetType().AssemblyQualifiedName!,
-                        EventData = JsonSerializer.Serialize(domainEvent),
-                        EventName = domainEvent.GetType().Name,
-                        CreatedAt = domainEvent.CreatedAt
-                    };
+                    AggregateId = aggregateId,
+                    AggregateType = aggregateType,
+                    Version = version,
+                    EventType = eventType,
+                    EventData = (DomainEvent)@event,
+                };
 
-                    eventDataRecords.Add(recordData);
-                }
+                await eventStoreRepository.SaveAsync(eventModel);
             }
-            catch (Exception err)
-            {
-                logger.LogError($"Error creating EventDataRecord. Message:{err.Message}, Stack:{err.StackTrace}");
-                throw;
-            }
-
-            return eventDataRecords;
         }
     }
 }

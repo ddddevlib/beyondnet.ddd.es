@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BeyondNet.Ddd" Version="1.14.0" />
+    <PackageReference Include="BeyondNet.Ddd.ValueObjects" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\BeyondNet.Ddd.Es\BeyondNet.Ddd.Es.csproj" />
+    <ProjectReference Include="..\..\Post.Common\Post.Common.csproj" />
+  </ItemGroup>
+
+</Project>

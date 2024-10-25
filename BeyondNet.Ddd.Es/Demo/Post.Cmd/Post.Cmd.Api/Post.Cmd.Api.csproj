@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BeyondNet.Cqrs" Version="1.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\BeyondNet.Ddd.Es.MongoDb\BeyondNet.Ddd.Es.MongoDb.csproj" />
+    <ProjectReference Include="..\..\..\..\BeyondNet.Ddd.Es\BeyondNet.Ddd.Es.csproj" />
+    <ProjectReference Include="..\Post.Cmd.Domain\Post.Cmd.Domain.csproj" />
+    <ProjectReference Include="..\Post.Cmd.Infrastructure\Post.Cmd.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Post.Common\Post.Common.csproj" />
+  </ItemGroup>
+
+</Project>
