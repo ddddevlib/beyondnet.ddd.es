@@ -54,6 +54,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Query.Domain", "Demo\P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Query.Infrastructure", "Demo\Post.Query\Post.Query.Infrastructure\Post.Query.Infrastructure.csproj", "{DEAB9C7D-75B2-4397-BDD1-EC36109972ED}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{996F3423-D4D8-41FA-B5F9-14AC47672CB7}"
+	ProjectSection(SolutionItems) = preProject
+		Demo\Post.Cmd\Post.Cmd.Api\tasks.json = Demo\Post.Cmd\Post.Cmd.Api\tasks.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

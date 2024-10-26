@@ -10,5 +10,6 @@
         public IDomainEvent EventData { get; set; } = default!;
         public string AssemblyQualifyName { get; set; } = default!;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime TimeStamp { get; set; } = DateTime.Now;
     }
 }

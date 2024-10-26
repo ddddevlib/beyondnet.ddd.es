@@ -1,14 +1,18 @@
-﻿namespace BeyondNet.Ddd.Es.Impl
+﻿using BeyondNet.Cqrs.Producers.Interfaces;
+
+namespace BeyondNet.Ddd.Es.Impl
 {
     public class EventStore : IEventStore
 
     {
         private readonly IEventStoreRepository eventStoreRepository;
+        private readonly IEventProducer eventProducer;
         private readonly ILogger<EventStore> logger;
 
-        public EventStore(IEventStoreRepository eventStoreRepository, ILogger<EventStore> logger)
+        public EventStore(IEventStoreRepository eventStoreRepository, IEventProducer eventProducer, ILogger<EventStore> logger)
         {
             this.eventStoreRepository = eventStoreRepository ?? throw new ArgumentNullException(nameof(eventStoreRepository));
+            this.eventProducer = eventProducer ?? throw new ArgumentNullException(nameof(eventProducer));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -33,6 +37,7 @@
             return eventStream.OrderBy(x => x.Version).Select(x => x.EventData).ToList();
         }
 
+        //TODO: Implement the SaveAsync method Transactions and Concurrency (SQL Server, MongoDb)
         public async Task SaveAsync(Guid aggregateId, string aggregateType, ICollection<IDomainEvent> events, int expectedVersion)
         {
             var eventStream = await eventStoreRepository.Load(aggregateId);
@@ -60,6 +65,7 @@
 
                 var eventModel = new EventDataRecord
                 {
+                    TimeStamp = DateTime.UtcNow,
                     AggregateId = aggregateId,
                     AggregateType = aggregateType,
                     Version = version,
@@ -68,6 +74,10 @@
                 };
 
                 await eventStoreRepository.SaveAsync(eventModel);
+
+                var topic = Environment.GetEnvironmentVariable("KAFKA_TOPIC") ?? "TopicDddEs";
+                
+                await eventProducer.ProduceAsync(topic, @event);
             }
         }
     }
