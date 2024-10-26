@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\BeyondNet.Ddd.Es\BeyondNet.Ddd.Es.csproj" />
     <ProjectReference Include="..\..\Post.Common\Post.Common.csproj" />
   </ItemGroup>
 

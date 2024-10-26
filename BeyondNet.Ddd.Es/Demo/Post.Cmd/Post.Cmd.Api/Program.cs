@@ -29,7 +29,6 @@ builder.Services.AddScoped<IEventSourcingHandler<PostAggregate>, AbstractEventSo
 
 // register command handler methods
 var dispatcher = new CommandDispatcher();
-builder.Services.AddSingleton<ICommandDispatcher>(_ => dispatcher);
 
 var app = builder.Build();
 
@@ -43,6 +42,8 @@ using (var scope = app.Services.CreateScope())
     dispatcher.RegisterHandler<RemoveCommentCommand>(serviceProvider.GetRequiredService<AbstractCommandHandler<RemoveCommentCommand>>().HandleAsync);
     dispatcher.RegisterHandler<DeletePostCommand>(serviceProvider.GetRequiredService<AbstractCommandHandler<DeletePostCommand>>().HandleAsync);
 }
+
+builder.Services.AddSingleton<ICommandDispatcher>(_ => dispatcher);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
